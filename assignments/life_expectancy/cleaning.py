@@ -2,16 +2,16 @@
 ## Assignmnents 1 - cleaning.py
 
 import pandas as pd
-def clean_data():
-    
+
+def clean_data(input_file: str, output_file: str, region: str='PT') -> None:
 
     # read table
     data = pd.read_csv('/nfs/workstation/wb_mkte/scalmeida/FAAST_SCA/assignments/life_expectancy/data/eu_life_expectancy_raw.tsv',sep='\t',engine ='python')
 
-    # data clean ':'
-    #data= data.apply(lambda x: x.str.strip().replace(':', "NaN"))
+    # extract only the values that match the pattern of digits and decimal points
     data.value=data.value.str.extract(r"(\d+\.\d+)")
-    # create new column
+    
+    # create new columns
     data = data.assign(unit=data["unit,sex,age,geo\\time"].str.split(',').str[0],
                 sex=data["unit,sex,age,geo\\time"].str.split(',').str[1],
                 age=data["unit,sex,age,geo\\time"].str.split(',').str[2],
@@ -34,8 +34,8 @@ def clean_data():
 
     # remove the NaN and trasform 
     data = data.dropna()
-    # data=data[(data.value.str.strip())!="NaN"]
-    #data=data[(data.value.notnull())]
+    data=data[(data.value.str.strip())!="NaN"]
+    data=data[(data.value.notnull())]
     data['value'] = pd.to_numeric(data['value'], errors='coerce')
 
     # value float
@@ -44,5 +44,5 @@ def clean_data():
     # select region
     data = data.query('region == "PT"')
 
-    data.to_csv('/nfs/workstation/wb_mkte/scalmeida/FAAST_SCA/assignments/life_expectancy/data/pt_life_expectancy.csv', index=False)
     print (data)
+    data.to_csv('/nfs/workstation/wb_mkte/scalmeida/FAAST_SCA/assignments/life_expectancy/data/pt_life_expectancy.csv', index=False)
