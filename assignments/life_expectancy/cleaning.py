@@ -3,12 +3,18 @@
 
 import argparse
 import pandas as pd
+from pathlib import Path
 
 def clean_data(region:str) -> None:
-    """ Clean data  """
+    """ The function clean data receives data from the original.tsv file and cleans the data.
+inputs: 
+data_to_clean > pandas Dataframe with diferentes types of countries and types of features; 
+region_code> string - select the country we want to use.
+for this exercice e wanted use PT  (for Portugal), 
+But we can select others countries"""
+# define a path
+    file_path = Path(__file__).parent / "data"/"eu_life_expectancy_raw.tsv"
 # read table
-
-    file_path = './life_expectancy/data/eu_life_expectancy_raw.tsv'
     with open(file_path, 'r', encoding="utf-8") as file:
         data = pd.read_csv(file, sep='\t', engine='python')
 
@@ -47,8 +53,11 @@ def clean_data(region:str) -> None:
 
     # select region
     data = data.query(f'region == "{region}"')
-
-    data.to_csv('./life_expectancy/data/pt_life_expectancy.csv', index=False)
+    
+    # define a path and write to csv
+    write_path = pathlib.Path(__file__).parent / 'data/pt_life_expectancy.csv'
+    #write to csv
+    data.to_csv(write_path, index=False)
 
 if __name__ == "__main__":  # pragma: no cover
     parser = argparse.ArgumentParser()
