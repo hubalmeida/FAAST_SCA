@@ -7,11 +7,11 @@ from pathlib import Path
 
 def clean_data(region:str) -> None:
     """ The function clean data receives data from the original.tsv file and cleans the data.
-inputs: 
-data_to_clean > pandas Dataframe with diferentes types of countries and types of features; 
-region_code> string - select the country we want to use.
-for this exercice e wanted use PT  (for Portugal), 
-But we can select others countries"""
+    inputs:
+    data_to_clean > pandas Dataframe with diferentes types of countries and types of features;
+    region_code> string - select the country we want to use.
+    for this exercice e wanted use PT  (for Portugal),
+    But we can select others countries"""
 # define a path
     file_path = Path(__file__).parent / "data"/"eu_life_expectancy_raw.tsv"
 # read table
@@ -53,7 +53,7 @@ But we can select others countries"""
 
     # select region
     data = data.query(f'region == "{region}"')
-    
+
     # define a path and write to csv
     write_path = pathlib.Path(__file__).parent / 'data/pt_life_expectancy.csv'
     #write to csv
@@ -63,7 +63,7 @@ if __name__ == "__main__":  # pragma: no cover
     parser = argparse.ArgumentParser()
     parser.add_argument("--region",
     help="region is a code to use on clean data",
-    default="PT",required=False)
+    pylintdefault="PT",required=False)
     args = parser.parse_args()
 
     clean_data(args.region)
