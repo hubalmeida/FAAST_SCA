@@ -3,20 +3,23 @@
 
 import argparse
 import pandas as pd
+import pathlib
 from pathlib import Path
 
-def clean_data(region:str) -> None:
-    """ The function clean data receives data from the original.tsv file and cleans the data.
+def clean_data(region: str = "PT") -> None:
+
+    """ The function receives data from original.tsv file and cleans the data.
     inputs:
     data_to_clean > pandas Dataframe with diferentes types of countries and types of features;
     region_code> string - select the country we want to use.
-    for this exercice e wanted use PT  (for Portugal),
+    for this exercice e wanted use PT (for Portugal),
     But we can select others countries"""
 # define a path
     file_path = Path(__file__).parent / "data"/"eu_life_expectancy_raw.tsv"
 # read table
     with open(file_path, 'r', encoding="utf-8") as file:
         data = pd.read_csv(file, sep='\t', engine='python')
+    print()
 
     # create new columns
     data = data.assign(unit=data["unit,sex,age,geo\\time"].str.split(',').str[0],
@@ -55,15 +58,15 @@ def clean_data(region:str) -> None:
     data = data.query(f'region == "{region}"')
 
     # define a path and write to csv
-    write_path = pathlib.Path(__file__).parent / 'data/pt_life_expectancy.csv'
+    out_path = pathlib.Path(__file__).parent / 'data/pt_life_expectancy.csv'
     #write to csv
-    data.to_csv(write_path, index=False)
+    data.to_csv(out_path, index=False)
 
 if __name__ == "__main__":  # pragma: no cover
     parser = argparse.ArgumentParser()
-    parser.add_argument("--region",
-    help="region is a code to use on clean data",
-    pylintdefault="PT",required=False)
+    parser.add_argument('-region',"--region",type=str,
+    help="region is a code to use on clean data")
     args = parser.parse_args()
 
-    clean_data(args.region)
+    clean_data()
+    
