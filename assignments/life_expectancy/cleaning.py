@@ -2,9 +2,9 @@
 ## Assignmnents 1 - cleaning.py
 
 import argparse
-import pandas as pd
 import pathlib
 from pathlib import Path
+import pandas as pd
 
 def clean_data(region: str = "PT") -> None:
 
@@ -69,4 +69,3 @@ if __name__ == "__main__":  # pragma: no cover
     args = parser.parse_args()
 
     clean_data()
-    
