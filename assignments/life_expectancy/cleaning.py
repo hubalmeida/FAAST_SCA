@@ -1,6 +1,7 @@
 """Training Clean Data with 3 functions load_data, clean_data, and save_data"""
 
-## Assignmnents 2 
+## Assignmnents 2
+
 import argparse
 import pathlib
 import pandas as pd
@@ -9,12 +10,14 @@ import pandas as pd
 from pandas import DataFrame
 
 def load_data():
+    """ function to load data"""
     file_path = Path(__file__).parent / "data"/"eu_life_expectancy_raw.tsv"
     with open(file_path, 'r', encoding="utf-8") as file:
         dataclean= pd.read_csv(file, sep='\t', engine='python')
         return dataclean
 
 def clean_data(region:str, dataclean:DataFrame):
+    """ function clean data"""
     # create new columns
     dataclean = dataclean.assign(unit=dataclean["unit,sex,age,geo\\time"].str.split(',').str[0],
                     sex=dataclean["unit,sex,age,geo\\time"].str.split(',').str[1],
@@ -54,15 +57,16 @@ def clean_data(region:str, dataclean:DataFrame):
     return data
 
 def save_data(datasave: DataFrame):
-    # define a path and write to csv
-        out_path = pathlib.Path(__file__).parent / 'data/pt_life_expectancy.csv'
-    #write to csv  
-        datasave.to_csv(out_path, index=False)
-        data = load_data()
-        cleaned_data = clean_data(data)
-        save_data(cleaned_data)
+    """ function save data"""
+# define a path and write to csv
+    out_path = pathlib.Path(__file__).parent / 'data/pt_life_expectancy.csv'
+#write to csv  
+    datasave.to_csv(out_path, index=False)
+    data = load_data()
+    cleaned_data = clean_data(data)
+    save_data(cleaned_data)
 
-if __name__ == "__main__":  # pragma: no cover
+if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-region',"--region",type=str,
     help="region is a code to use on clean data")
