@@ -42,7 +42,7 @@ def clean_data(region:str, dataclean:DataFrame):
     dataclean['year'] = dataclean['year'].astype(int)
 
     # remove the NaN and trasform
-    dataclean = dataclean.dropna()
+    #dataclean = dataclean.dropna()
     dataclean=dataclean[(dataclean.value.str.strip())!="NaN"]
     dataclean=dataclean[(dataclean.value.notnull())]
     dataclean['value'] = pd.to_numeric(dataclean['value'], errors='coerce')
@@ -53,8 +53,8 @@ def clean_data(region:str, dataclean:DataFrame):
     # select region
     #dataclean = dataclean.query(f'region == "{region}"')
     cleaned_data = dataclean.dropna()
-    data = dataclean.query(f'region == "{region}"')
-    #data = cleaned_data[cleaned_data['region'] == region]
+    #data = dataclean.query(f'region == "{region}"')
+    data = cleaned_data[cleaned_data['region'] == region]
     return data
 
 def save_data(datasave: DataFrame):
