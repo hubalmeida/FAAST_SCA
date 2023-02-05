@@ -1,11 +1,10 @@
-"""Training Clean Data"""
+"""Training Clean Data with 3 """
 ## Assignmnents 1 - cleaning.py
 
 import argparse
 import pathlib
 import pandas as pd
 from pathlib import Path
-
 
 def load_data():
     file_path = Path(__file__).parent / "data" / "eu_life_expectancy_raw.tsv"
@@ -14,20 +13,21 @@ def load_data():
         return data
 
 def clean_data(region:str, data:pd.DataFrame):
-    # create new columns
+# create new columns
     data = data.assign(unit=data["unit,sex,age,geo\\time"].str.split(',').str[0],
                       sex=data["unit,sex,age,geo\\time"].str.split(',').str[1],
                       age=data["unit,sex,age,geo\\time"].str.split(',').str[2],
                       geo=data["unit,sex,age,geo\\time"].str.split(',').str[3])
 
-    # rename column geo to region
+# rename column geo to region
     data = data.rename(columns={"geo": "region"})
 
-    # create array year
-    column_year = data.columns[~data.columns.isin(['unit,sex,age,geo\\time', 'unit', 'sex', 'age', 'region'])]
+# create array year
+    column_year = data.columns[~data.columns.isin(['unit,sex,age,geo\\time',
+    'unit', 'sex', 'age', 'region'])]
 
-    # unpivots the date to long format,
-    # following columns: unit, sex, age, region, year, value
+# unpivots the date to long format,
+# following columns: unit, sex, age, region, year, value
     data = data.melt(id_vars=['unit', 'sex', 'age', 'region'],
                      value_vars=column_year,
                      var_name='year',
