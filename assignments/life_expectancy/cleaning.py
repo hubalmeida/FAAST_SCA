@@ -53,7 +53,8 @@ def clean_data(region:str, dataclean:DataFrame):
     # select region
     #dataclean = dataclean.query(f'region == "{region}"')
     cleaned_data = dataclean.dropna()
-    data = cleaned_data[cleaned_data['region'] == region]
+    data = dataclean.query(f'region == "{region}"')
+    #data = cleaned_data[cleaned_data['region'] == region]
     return data
 
 def save_data(datasave: DataFrame):
