@@ -8,7 +8,7 @@ from pathlib import Path
 import pandas as pd
 from pandas import DataFrame
 
-def load_data():
+def load_data(region: str = "PT") -> None:
     """ function to load data"""
     file_path = Path(__file__).parent / "data"/"eu_life_expectancy_raw.tsv"
     with open(file_path, 'r', encoding="utf-8") as file:
