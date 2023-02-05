@@ -53,7 +53,8 @@ def clean_data(region:str, dataclean:DataFrame):
     # select region
     dataclean = dataclean.query(f'region == "{region}"')
     cleaned_data = dataclean.dropna()
-    return dataclean
+    data = cleaned_data[cleaned_data['region'] == region]
+    return data
 
 def save_data(datasave: DataFrame):
     """ function save data"""
@@ -62,7 +63,7 @@ def save_data(datasave: DataFrame):
 #write to csv
     datasave.to_csv(out_path, index=False)
     data = load_data()
-    cleaned_data = clean_data(data)
+    cleaned_data = clean_data(dataclean)
     save_data(cleaned_data)
 
 if __name__ == "__main__":
