@@ -6,7 +6,6 @@ import argparse
 import pathlib
 import pandas as pd
 from pathlib import Path
-import pandas as pd
 from pandas import DataFrame
 
 def load_data():
@@ -54,13 +53,13 @@ def clean_data(region:str, dataclean:DataFrame):
     # select region
     dataclean = dataclean.query(f'region == "{region}"')
     cleaned_data = dataclean.dropna()
-    return data
+    return dataclean
 
 def save_data(datasave: DataFrame):
     """ function save data"""
 # define a path and write to csv
     out_path = pathlib.Path(__file__).parent / 'data/pt_life_expectancy.csv'
-#write to csv  
+#write to csv
     datasave.to_csv(out_path, index=False)
     data = load_data()
     cleaned_data = clean_data(data)
