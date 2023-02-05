@@ -51,7 +51,7 @@ def clean_data(region:str, dataclean:DataFrame):
     dataclean['value'] = dataclean['value'].astype(float)
 
     # select region
-    dataclean = dataclean.query(f'region == "{region}"')
+    #dataclean = dataclean.query(f'region == "{region}"')
     cleaned_data = dataclean.dropna()
     data = cleaned_data[cleaned_data['region'] == region]
     return data
