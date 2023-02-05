@@ -4,8 +4,8 @@
 
 import argparse
 import pathlib
-import pandas as pd
 from pathlib import Path
+import pandas as pd
 from pandas import DataFrame
 
 def load_data():
@@ -63,7 +63,7 @@ def save_data(datasave: DataFrame):
 #write to csv
     datasave.to_csv(out_path, index=False)
     data = load_data()
-    cleaned_data = clean_data(dataclean)
+    cleaned_data = clean_data(data)
     save_data(cleaned_data)
 
 if __name__ == "__main__":
