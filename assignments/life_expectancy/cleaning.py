@@ -5,13 +5,14 @@
 import argparse
 from pathlib import Path
 import pandas as pd
+from pandas import DataFrame
 
 def load_data():
     """ function to load data and return the data to clean, dataclean"""
     file_path = Path(__file__).parent / "data/eu_life_expectancy_raw.tsv"
     return pd.read_csv(file_path, sep='\t', encoding="utf-8")
 
-def clean_data(dataclean, region):
+def clean_data(dataclean: DataFrame, region: str):
     """ function clean data, receives dataclean"""
     # create new columns
     dataclean = dataclean.assign(unit=dataclean["unit,sex,age,geo\\time"].str.split(',').str[0],
@@ -40,6 +41,7 @@ def main(region:str):
     dataclean = load_data()
     cleaned_data = clean_data(dataclean, region)
     save_data(cleaned_data)
+    print(region)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
