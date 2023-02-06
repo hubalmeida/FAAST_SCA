@@ -7,7 +7,7 @@ from pathlib import Path
 import pandas as pd
 from pandas import DataFrame
 
-def load_data ():
+def load_data (region: str = "PT") -> None:
     """ function to load data and return the data to clean, dataclean"""
     file_path = Path(__file__).parent / "data/eu_life_expectancy_raw.tsv"
     return pd.read_csv(file_path, sep='\t', encoding="utf-8")
@@ -41,12 +41,14 @@ def main(region:str):
     dataclean = load_data()
     cleaned_data = clean_data(dataclean,region)
     save_data(cleaned_data)
+
     print(region)
     input ("press enterto continue")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-region',"--region",type=str,
-    help="region is a code to use on clean data",default='PT', required=False)
+    help="region is a code to use on clean data")
+    #default='PT', required=False)
     args = parser.parse_args()
     main(args.region)
