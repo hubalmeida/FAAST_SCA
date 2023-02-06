@@ -9,7 +9,7 @@ import pandas as pd
 def load_data():
     """ function to load data and return the data to clean, dataclean"""
     file_path = Path(__file__).parent / "data/eu_life_expectancy_raw.tsv"
-    return pd.read_csv(file_path, sep='\t', encoding="utf-8")    
+    return pd.read_csv(file_path, sep='\t', encoding="utf-8")   
 
 def clean_data(dataclean, region):
     """ function clean data, receives dataclean"""
