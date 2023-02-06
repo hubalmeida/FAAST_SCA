@@ -35,7 +35,7 @@ def save_data(datasave):
     out_path = Path(__file__).parent / 'data/pt_life_expectancy.csv'
     datasave.to_csv(out_path, index=False)
 
-def main(region='PT'):
+def main(region:str):
     """defaut is region"""
     dataclean = load_data()
     cleaned_data = clean_data(dataclean, region)
