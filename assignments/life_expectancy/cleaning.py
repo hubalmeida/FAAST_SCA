@@ -3,13 +3,13 @@
 ## Assignmnents 2
 
 import argparse
-import pandas as pd
 from pathlib import Path
+import pandas as pd
 
 def load_data():
     """ function to load data and return the data to clean, dataclean"""
     file_path = Path(__file__).parent / "data/eu_life_expectancy_raw.tsv"
-    return pd.read_csv(file_path, sep='\t', encoding="utf-8")      
+    return pd.read_csv(file_path, sep='\t', encoding="utf-8")    
 
 def clean_data(dataclean, region):
     """ function clean data, receives dataclean"""
@@ -30,12 +30,13 @@ def clean_data(dataclean, region):
     dataclean['value'] = dataclean['value'].astype(float)
     return dataclean[dataclean['region'] == region].dropna()
 
-
 def save_data(datasave):
+    """function to save de data clean"""
     out_path = Path(__file__).parent / 'data/pt_life_expectancy.csv'
     datasave.to_csv(out_path, index=False)
 
 def main(region='PT'):
+    """defaut is region"""
     dataclean = load_data()
     cleaned_data = clean_data(dataclean, region)
     save_data(cleaned_data)
