@@ -3,6 +3,7 @@
 ## Assignmnents 2
 
 import argparse
+import pathlib
 from pathlib import Path
 import pandas as pd
 from pandas import DataFrame
@@ -42,13 +43,10 @@ def main(region:str):
     cleaned_data = clean_data(dataclean,region)
     save_data(cleaned_data)
 
-    print(region)
-    input ("press enterto continue")
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-region',"--region",type=str,
-    help="region is a code to use on clean data")
-    #default='PT', required=False)
+    help="region is a code to use on clean data",
+    default="PT", required=False)
     args = parser.parse_args()
     main(args.region)
