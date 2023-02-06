@@ -8,15 +8,15 @@ from pathlib import Path
 import pandas as pd
 from pandas import DataFrame
 
-def load_data(region: str = "PT") -> None:
-    """ function to load data"""
+def load_data ():
+    """ function to load data and return the data to clean, dataclean"""
     file_path = Path(__file__).parent / "data"/"eu_life_expectancy_raw.tsv"
     with open(file_path, 'r', encoding="utf-8") as file:
         dataclean= pd.read_csv(file, sep='\t', engine='python')
         return dataclean
 
 def clean_data(region:str, dataclean:DataFrame):
-    """ function clean data"""
+    """ function clean data, receives dataclean"""
     # create new columns
     dataclean = dataclean.assign(unit=dataclean["unit,sex,age,geo\\time"].str.split(',').str[0],
                     sex=dataclean["unit,sex,age,geo\\time"].str.split(',').str[1],
@@ -61,14 +61,18 @@ def save_data(datasave: DataFrame):
     """ function save data"""
 # define a path and write to csv
     out_path = pathlib.Path(__file__).parent / 'data/pt_life_expectancy.csv'
+ 
 #write to csv
     datasave.to_csv(out_path, index=False)
     data = load_data()
     cleaned_data = clean_data(data)
     save_data(cleaned_data)
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-region',"--region",type=str,
-    help="region is a code to use on clean data")
+def main(region: str):
+
+
+    if __name__ == "__main__": # pragma: no cover
+        parser = argparse.ArgumentParser()
+        parser.add_argument('-region',"--region",type=str,
+        help="region is a code to use on clean data",default='PT',required=False)
     args = parser.parse_args()
