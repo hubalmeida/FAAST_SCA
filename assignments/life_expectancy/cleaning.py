@@ -36,15 +36,17 @@ def save_data(datasave):
     out_path = Path(__file__).parent / 'data/pt_life_expectancy.csv'
     datasave.to_csv(out_path, index=False)
 
-def main(region:str='PT'):
-    """defaut is region= PT"""
+def main(region: str = "PT")-> None:
+    """defaut is region"""
     dataclean = load_data()
     cleaned_data = clean_data(dataclean,region)
     save_data(cleaned_data)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('-region', "--region", type=str,
-    help="region is a code to use on clean data")
+    parser.add_argument('-region',"--region",type=str,
+    help="region is a code to use on clean data",
+    default='PT', required=False)
     args = parser.parse_args()
     main(args.region)
+
