@@ -7,7 +7,7 @@ from pathlib import Path
 import pandas as pd
 from pandas import DataFrame
 
-def load_data ():
+def load_data():
     """ function to load data and return the data to clean, dataclean"""
     file_path = Path(__file__).parent / "data/eu_life_expectancy_raw.tsv"
     return pd.read_csv(file_path, sep='\t', encoding="utf-8")
