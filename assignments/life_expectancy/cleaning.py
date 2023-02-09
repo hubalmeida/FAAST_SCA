@@ -12,7 +12,7 @@ def load_data():
     file_path = Path(__file__).parent / "data/eu_life_expectancy_raw.tsv"
     return pd.read_csv(file_path, sep='\t', encoding="utf-8")
 
-def clean_data(dataclean: DataFrame, region: str):
+def clean_data(dataclean: DataFrame, region: str = "PT"):
     """ function clean data, receives dataclean"""
     # create new columns
     dataclean = dataclean.assign(unit=dataclean["unit,sex,age,geo\\time"].str.split(',').str[0],
