@@ -12,7 +12,7 @@ def load_data():
     file_path = Path(__file__).parent / "data/eu_life_expectancy_raw.tsv"
     return pd.read_csv(file_path, sep='\t', encoding="utf-8")
 
-def clean_data(dataclean: DataFrame, region: str = "PT"):
+def clean_data(dataclean: DataFrame, region="PT"):
     """ function clean data, receives dataclean"""
     # create new columns
     dataclean = dataclean.assign(unit=dataclean["unit,sex,age,geo\\time"].str.split(',').str[0],
@@ -45,7 +45,8 @@ def main(region: str = "PT")-> None:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-region',"--region",type=str,
-    help="region is a code to use on clean data",
-    default='PT', required=False)
+    help="region is a code to use on clean data")
+    #default='PT', required=False)
     args = parser.parse_args()
     main(args.region)
+
