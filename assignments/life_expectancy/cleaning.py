@@ -1,71 +1,51 @@
-"""Training Clean Data"""
-## Assignmnents 1 - cleaning.py
+"""Training Clean Data with 3 functions load_data, clean_data, and save_data"""
+
+## Assignmnents 2
 
 import argparse
-import pathlib
 from pathlib import Path
 import pandas as pd
+from pandas import DataFrame
 
-def clean_data(region: str = "PT") -> None:
+def load_data():
+    """ function to load data and return the data to clean, dataclean"""
+    file_path = Path(__file__).parent / "data/eu_life_expectancy_raw.tsv"
+    return pd.read_csv(file_path, sep='\t', encoding="utf-8")
 
-    """ The function receives data from original.tsv file and cleans the data.
-    inputs:
-    data_to_clean > pandas Dataframe with diferentes types of countries and types of features;
-    region_code> string - select the country we want to use.
-    for this exercice e wanted use PT (for Portugal),
-    But we can select others countries"""
-# define a path
-    file_path = Path(__file__).parent / "data"/"eu_life_expectancy_raw.tsv"
-# read table
-    with open(file_path, 'r', encoding="utf-8") as file:
-        data = pd.read_csv(file, sep='\t', engine='python')
-    print()
-
+def clean_data(dataclean: DataFrame, region: str = "PT"):
+    """ function clean data, receives dataclean"""
     # create new columns
-    data = data.assign(unit=data["unit,sex,age,geo\\time"].str.split(',').str[0],
-                    sex=data["unit,sex,age,geo\\time"].str.split(',').str[1],
-                    age=data["unit,sex,age,geo\\time"].str.split(',').str[2],
-                    geo=data["unit,sex,age,geo\\time"].str.split(',').str[3])
+    dataclean = dataclean.assign(unit=dataclean["unit,sex,age,geo\\time"].str.split(',').str[0],
+                                 sex=dataclean["unit,sex,age,geo\\time"].str.split(',').str[1],
+                                 age=dataclean["unit,sex,age,geo\\time"].str.split(',').str[2],
+                                 region=dataclean["unit,sex,age,geo\\time"].str.split(',').str[3])
+    dataclean = dataclean.rename(columns={"region": "region"})
+    dataclean = dataclean.melt(id_vars=['unit','sex','age','region'],
+                                value_vars=dataclean.columns[~dataclean.columns.isin(
+                                    ['unit,sex,age,geo\\time','unit','sex','age','region'])],
+                                var_name='year', value_name='value')
+    dataclean.value = dataclean.value.str.extract(r"(\d+\.\d+)")
+    dataclean['year'] = dataclean['year'].astype(int)
+    dataclean = dataclean[(dataclean.value.str.strip() != "NaN") & (dataclean.value.notnull())]
+    dataclean['value'] = pd.to_numeric(dataclean['value'], errors='coerce')
+    dataclean['value'] = dataclean['value'].astype(float)
+    return dataclean[dataclean['region'] == region].dropna()
 
-    # rename column geo to region
-    data = data.rename(columns={"geo":"region"})
+def save_data(datasave):
+    """function to save de data clean"""
+    out_path = Path(__file__).parent / 'data/pt_life_expectancy.csv'
+    datasave.to_csv(out_path, index=False)
 
-    # create array year
-    column_year = data.columns[
-        ~data.columns.isin(['unit,sex,age,geo\\time','unit','sex','age','region'])]
+def main(region: str = "PT")-> None:
+    """defaut is region"""
+    dataclean = load_data()
+    cleaned_data = clean_data(dataclean,region)
+    save_data(cleaned_data)
 
-    # unpivots the date to long format,
-    # following columns: unit, sex, age, region, year, value
-    data = data.melt(id_vars=['unit','sex','age','region'],
-    value_vars= column_year,
-    var_name = 'year',
-    value_name = 'value')
-
-    # extract only the values that match the pattern of digits and decimal points, year is an int
-    data.value=data.value.str.extract(r"(\d+\.\d+)")
-    data['year'] = data['year'].astype(int)
-
-    # remove the NaN and trasform
-    data = data.dropna()
-    data=data[(data.value.str.strip())!="NaN"]
-    data=data[(data.value.notnull())]
-    data['value'] = pd.to_numeric(data['value'], errors='coerce')
-
-    # value float
-    data['value'] = data['value'].astype(float)
-
-    # select region
-    data = data.query(f'region == "{region}"')
-
-    # define a path and write to csv
-    out_path = pathlib.Path(__file__).parent / 'data/pt_life_expectancy.csv'
-    #write to csv
-    data.to_csv(out_path, index=False)
-
-if __name__ == "__main__":  # pragma: no cover
+if __name__ == '__main__': #pragma: no cover
     parser = argparse.ArgumentParser()
     parser.add_argument('-region',"--region",type=str,
-    help="region is a code to use on clean data")
+    help="region is a code to use on clean data",
+    default='PT', required=False)
     args = parser.parse_args()
-
-    clean_data()
+    main(args.region)
