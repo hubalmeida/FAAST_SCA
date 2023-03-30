@@ -1,16 +1,9 @@
-"""Training Clean Data with 3 functions load_data, clean_data, and save_data"""
-
-## Assignmnents 2
+"""Training Clean Data """
 
 import argparse
-from pathlib import Path
 import pandas as pd
 from pandas import DataFrame
-
-def load_data():
-    """ function to load data and return the data to clean, dataclean"""
-    file_path = Path(__file__).parent / "data/eu_life_expectancy_raw.tsv"
-    return pd.read_csv(file_path, sep='\t', encoding="utf-8")
+from life_expectancy.load_save import save_data,load_data
 
 def clean_data(dataclean: DataFrame, region: str = "PT"):
     """ function clean data, receives dataclean"""
@@ -31,16 +24,12 @@ def clean_data(dataclean: DataFrame, region: str = "PT"):
     dataclean['value'] = dataclean['value'].astype(float)
     return dataclean[dataclean['region'] == region].dropna()
 
-def save_data(datasave):
-    """function to save de data clean"""
-    out_path = Path(__file__).parent / 'data/pt_life_expectancy.csv'
-    datasave.to_csv(out_path, index=False)
-
-def main(region: str = "PT")-> None:
+def main(region: str = "PT")-> DataFrame:
     """defaut is region"""
     dataclean = load_data()
     cleaned_data = clean_data(dataclean,region)
     save_data(cleaned_data)
+    return cleaned_data
 
 if __name__ == '__main__': #pragma: no cover
     parser = argparse.ArgumentParser()
