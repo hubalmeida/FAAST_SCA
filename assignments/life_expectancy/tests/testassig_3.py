@@ -13,7 +13,6 @@ def load_data():
         return pd.read_csv(file_path, sep='\t', encoding="utf-8")
     return _load_data
 
-
 def test_clean_data(load_data):
     from life_expectancy.data_cleaning import clean_data
     
